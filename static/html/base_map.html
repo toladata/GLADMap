@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../css/bootstrap.css" rel="stylesheet" />
+
+
+<script src="../js/jquery-1.11.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/d3.v3.min.js"></script>
+<script src="../js/queue.v1.min.js"></script>
+<script src="../js/topojson.v1.min.js"></script>
+</head>
+<body>
+	<div class="container" style="text-align: center;">
+		<nav class="navbar navbar-custom">
+			<h3 style="text-align: center">Mercy Corps</h3>
+		</nav>
+		<div id='container'></div>
+	</div>
+
+	<script type="text/javascript">
+		var width = 1000, height = 1000;
+
+		var projection = d3.geo.mercator().precision(.1);
+
+		var path = d3.geo.path().projection(projection);
+
+		var svg = d3.select("#container").insert("svg:svg")
+				.attr("width", width).attr("height", height);
+
+		var all = svg.append("svg:g").attr("id", "all");
+
+		var countries = all.append("svg:g").attr("id", "countries");
+
+		var cells = all.append("svg:g").attr("id", "cells");
+
+		queue().defer(d3.json, '../json/readme-world.json')
+		.defer(d3.json, '/data/AFG/afg_2.json').await(ready);
+
+		function ready(error, world, target_loc) {
+			countries.append("path").datum(
+					topojson.feature(world, world.objects.countries)).attr(
+					"class", "countries").attr("d", path).attr("fill",
+					"#C0C0C0").attr("stroke-width", "1").attr("stroke",
+					"#DAA520");
+			
+			render(target_loc);
+
+		}
+		
+		function render(json) {
+			/* var width = 960, height = 500;
+			var projection = d3.geo.mercator();
+
+			var path = d3.geo.path().projection(projection);
+
+			svg = d3.select("#output").append("svg").attr("width", width).attr(
+					"height", height).call(
+					d3.behavior.zoom().on("zoom", redraw)).append("g"); */
+
+			if (json.type == 'Topology') {
+				//draw topojson
+				d3.select("#drop").remove();
+				svg.append("path").datum(topojson.mesh(json)).attr("d", path);
+			} else if (json.type == 'FeatureCollection') {
+				//draw geojson
+				d3.select("#drop").remove();
+				svg.append("path").datum({
+					type : "FeatureCollection",
+					features : json.features
+				}).attr("d", path);
+			} else {
+				document.getElementById("output").innerHTML = "This file does not seem to be topojson or geojson.";
+			}
+		}
+		
+		function redraw() {
+			var s = d3.event.scale;
+			var t = d3.event.translate;
+			svg.style("stroke-width", 1 / s).attr("transform",
+					"translate(" + t + ")scale(" + s + ")");
+		}
+	</script>
+
+</body>
+</html>
