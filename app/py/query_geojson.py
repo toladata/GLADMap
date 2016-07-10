@@ -3,7 +3,8 @@ import sys
 from convert_to_geojson import geo_data_dir
 import json
 
-def search_feature(iso_code, name_1="", name_2="", name_3=""):
+
+def search_feature(iso_code, name_1="", name_2="", name_3="", geo_data_dir_local = geo_data_dir):
 	'''
 	Finds data file for a ISO code and looks in below json path
 	features.[i].properties.NAME_1
@@ -13,9 +14,9 @@ def search_feature(iso_code, name_1="", name_2="", name_3=""):
 	print "Searching for - \n\t {0} \n\t {1} \n\t {2} \n\t {3}".format( iso_code, name_1, name_2, name_3 )
 	iso_to_file = {}
 	feature_result = [] # declaration to store results
-	for file in listdir(geo_data_dir):
+	for file in listdir(geo_data_dir_local):
 		if file.endswith(".json") and file != "file_locations.json":
-			iso_to_file[file[0:3]] = geo_data_dir + file
+			iso_to_file[file[0:3]] = geo_data_dir_local + file
 
 	print "Looking in " + iso_to_file[iso_code]
 
@@ -43,9 +44,9 @@ def create_json_from_features(features):
 	return json.dumps(geo_json)
 
 
-def search_and_create_json(iso_code, name_1="", name_2="", name_3=""):
-	features = search_feature(iso_code, name_1, name_2, name_3)
-	print create_json_from_features(features)
+def search_and_create_json(iso_code, name_1="", name_2="", name_3="", updated_path=geo_data_dir):
+	features = search_feature(iso_code, name_1, name_2, name_3, updated_path)
+	return create_json_from_features(features)
 	
 
 if __name__ == "__main__":
@@ -65,4 +66,5 @@ if __name__ == "__main__":
 	name_2 = input[3]
 	name_3 = input[4]
 
-	search_and_create_json(iso_code, name_1, name_2, name_3)
+	print search_and_create_json(iso_code, name_1, name_2, name_3)
+
