@@ -16,7 +16,7 @@ def visualize():
 
 
 @mod_data.route("/globe")
-def visualize():
+def globe():
 	return render_template('globe.html')
 
 
