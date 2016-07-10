@@ -275,7 +275,9 @@ $("#saveFile").on('click',function(){
     $.ajax({
            url: "/save-state",
            type: "POST",
-           data: params,
+           data: JSON.stringify(params),
+           processData: false,  // tell jQuery not to process the data
+           contentType: false   // tell jQuery not to set contentType
          }).done(function( data ) {
              $(".save-utility-holder").show();
          });
