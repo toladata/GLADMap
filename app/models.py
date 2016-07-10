@@ -2,7 +2,6 @@ from flask import Blueprint,  render_template,request
 from flask_cache import Cache
 import os
 from app import app
-from app import mongo
 import json
 from py.query_geojson import search_and_create_json
 
