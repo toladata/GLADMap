@@ -57,6 +57,8 @@ function Globe (){
   my.cosLat = 1;
 
   my.when("box", function (box){
+  box.width=400
+  box.height=400
     canvas.width = box.width;
     canvas.height = box.height;
     projection.translate([box.width / 2, box.height / 2]);

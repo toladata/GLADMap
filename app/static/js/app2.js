@@ -343,7 +343,8 @@ $("#saveFile").on('click',function(){
                processData: false,  // tell jQuery not to process the data
                contentType: 'application/json'   // tell jQuery not to set contentType
              }).done(function( data ) {
-                 $(".save-utility-holder").show();
+                 $(".save-utility-holder").hide();
+                   location.reload();
              });
 
 })
