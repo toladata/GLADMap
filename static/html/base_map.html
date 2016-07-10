@@ -35,10 +35,11 @@
 
 		var cells = all.append("svg:g").attr("id", "cells");
 
-		queue().defer(d3.json, '../json/readme-world.json')
+		queue().
+		defer(d3.json, '../json/readme-world.json')
 		.defer(d3.json, '/data/AFG/afg_2.json').await(ready);
 
-		function ready(error, world, target_loc) {
+		function ready(error, world, target_loc, points) {
 			countries.append("path").datum(
 					topojson.feature(world, world.objects.countries)).attr(
 					"class", "countries").attr("d", path).attr("fill",
