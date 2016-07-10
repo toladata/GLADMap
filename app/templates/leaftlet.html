@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/leaflet.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='leaflet-cluster/MarkerCluster.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='leaflet-cluster/MarkerCluster.Default.css') }}">
+    <style>
+		#mapid { height: 600px; width:90% }
+	</style>
+
+</head>
+<body>
+	
+	<div id="mapid"></div>
+
+	<script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
+    <script src="{{ url_for('static', filename='leaflet-cluster/leaflet.markercluster-src.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+		
+</body>
+</html>
