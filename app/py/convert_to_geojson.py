@@ -6,7 +6,7 @@ import os
 from dircache import listdir
 from download_shape import shp_file_dir
 
-geo_data_dir = "../data/"
+geo_data_dir = "../static/data/"
 ## {0} -> destination geojson {1} - source shape
 cmd_template = 'ogr2ogr -f "GeoJSON" {0} {1}'
 
