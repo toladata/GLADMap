@@ -3,6 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title>Map & Globe</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/bootstrap.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='leaflet-cluster/MarkerCluster.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='leaflet-cluster/MarkerCluster.Default.css') }}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
@@ -22,8 +27,8 @@
     <script src="http://chiasm-project.github.io/chiasm-links/chiasm-links-v0.2.1.js"></script>
 
     <!-- Custom Chiasm plugins for this example. -->
-     <script src="../js/globe.js"></script>
-    <script src="../js/chiasm-leaflet.js"></script>
+      <script src="{{ url_for('static', filename='js/globe.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/chiasm-leaflet.js') }}"></script>
 
     <style>
 
@@ -36,14 +41,131 @@
         position: fixed;
         left: 20px;
         right: 20px;
-        top: 20px;
+        top: 100px;
         bottom: 20px;
       }
+			#mapid { height: 600px; width:90% ;float:left;}
+		select#countryList{ display:none;}
+		.margin-15{   margin: 15px;}
+		.file-upload-holder,.save-utility-holder{display:none; float: right;}
+		.nav > li.nearest{display:none;}
+		.loader{
+		    position: fixed;
+            z-index: 10000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba( 255, 255, 255, .8 ) url('/static/js/images/loading.gif') 50% 50% no-repeat;
+            display:none;
+
+		}
+		.tooltip{
+		    position: absolute;
+            padding: 5px;
+            font: 12px sans-serif;
+            background: #B3B3B3;
+            border: 0;
+            border-radius: 8px;
+            pointer-events: none;
+            opacity:0
+		}
     </style>
 
   </head>
   <body>
-    <div id="chiasm-container"></div>
+  <nav class="navbar navbar-default">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="#">GLADMap</a>
+          </div>
+
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                  <li class="margin-15">
+                      <!--<a href="#">Select Country</a>-->
+                      <select id="countryList" multiple="multiple">
+                      </select>
+                  </li>
+                  <li class="margin-15">
+                      <div class="btn btn-default" id="showUploader">Upload Data</div>
+                      <div class="file-upload-holder">
+                          <form>
+                              <input type="file" accept="application/json" name="file" class="upload-file-utility">
+                              <input type="text" placeholder="Enter description" name="fileNames" class="upload-file-utility">
+                              <div id="uploadFile" class="btn btn-success">Done</div>
+                          </form>
+                      </div>
+                  </li>
+
+                  <li class="margin-15">
+                      <select id="uploadedList"><option value="">--select uploaded events--</option></select>
+                  </li>
+
+                  <li class="margin-15 nearest">
+                      <div id="getNearest" class="btn btn-default">Get nearest</div>
+                      <div id="hideNearest" class="btn btn-default btn-sm">X</div>
+                  </li>
+                  <li class="margin-15">
+                      <div id="saveState" class="btn btn-default">Save</div>
+                      <div class="save-utility-holder">
+                          <form>
+                              <input type="text" placeholder="Enter description" name="fileNames" class="save-file-utility">
+                              <div id="saveFile" class="btn btn-success">Done</div>
+                          </form>
+                      </div>
+
+                  </li>
+              </ul>
+          </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+  </nav>
+
+
+  <div id="modalOpener" data-toggle="modal" data-target="#myModal"></div>
+
+  <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">×</button>
+                  <h4 class="modal-title ng-binding">Mark the selected region:</h4>
+              </div>
+              <div class="modal-body">
+                  <input type="radio" name="status" value="green">  Mark Safe<br>
+                  <input type="radio" name="status" value="orange">  Mark Alert<br>
+                  <input type="radio" name="status" value="red">  Mark Danger<br>
+                  <br>
+                  <button id="done"type="submit" data-dismiss="modal">Submit</button>
+                  <button id="saveGeoJSON"type="submit" data-dismiss="modal">Save GeoJSON</button>
+
+              </div>
+
+
+
+          </div>
+
+      </div>
+  </div>
+  <div class="loader"></div>
+  <div class="tooltip"></div>
+
+  <a href="#" id="downloadAnchorElem"></a>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap-select.js') }}"></script>
+  <script src="{{ url_for('static', filename='leaflet-cluster/leaflet.markercluster-src.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/leafletknn.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app2.js') }}"></script>
+
+
+
+
+
+  <div id="chiasm-container"></div>
 
     <script>
 

@@ -15,6 +15,12 @@ def visualize():
     return render_template('leaftlet.html')
 
 
+@mod_data.route("/globe")
+def visualize():
+	return render_template('globe.html')
+
+
+
 @mod_data.route("/get-uploaded-data")
 def get_uploaded_data():
     allFiles=[]

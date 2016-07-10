@@ -19,13 +19,7 @@ function ChiasmLeaflet() {
 
   // Instantiate the Leaflet map, see docs at
   // http://leafletjs.com/reference.html#map-constructor
-  my.map = L.map(my.el, {
 
-    // Turn off the "Leaflet" link in the lower right corner.
-    // Leaflet is properly attributed in the README.
-    attributionControl: false
-
-  }).setView(my.center, my.zoom);
 
   // Add the black & white style map layer.
   // Found by browsing http://leaflet-extras.github.io/leaflet-providers/preview/
