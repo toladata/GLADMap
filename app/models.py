@@ -83,7 +83,7 @@ def save_state():
 
 	feature_result = []
 	for file in list_file:
-		feature_result.append(json.load(open("app"+file,"r"))["features"])
+		feature_result += json.load(open("app"+file,"r"))["features"]
 
 	print "Added features for all files"
 	for color in color_info:
@@ -95,9 +95,9 @@ def save_state():
 		if "NAME_3" in color["properties"] :
 			name_3 = color["properties"]["NAME_3"]
 
-		feature = search_location_in_all_files(list_file, iso_code, name_1, name_2, name_3,color_code)
+		features = search_location_in_all_files(list_file, iso_code, name_1, name_2, name_3,color_code)
 		
-		feature_result.append(feature)
+		feature_result += features
 
 	print "Added results for all color features"
 
