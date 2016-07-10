@@ -16,7 +16,6 @@ def convert_shp_json(path_shp):
 	print command
 	os.system(command)
 
-
 if __name__ == "__main__":
 	# convert_shp_json("../tmp/AFG_adm2.shp")
 	for file in listdir(shp_file_dir):

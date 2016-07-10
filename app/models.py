@@ -4,6 +4,8 @@ import os
 from app import app
 from app import mongo
 import json
+from py.query_geojson import search_and_create_json
+
 
 mod_data = Blueprint('data', __name__)
 cache = Cache(app,config={'CACHE_TYPE': 'simple'})
@@ -40,5 +42,13 @@ def upload_file():
         else:
             return json.dumps({"success": False})
     return json.dumps({"success": True})
+
+
+@mod_data.route("/export-geojson/<iso_code>/<name_1>/<name_2>/<name_3>")
+def export_geojson(iso_code, name_1, name_2, name_3):
+    '''
+    	export-geojson/IND/Uttar Pradesh/Bijnor/Dhampur
+    '''
+    return search_and_create_json(iso_code, name_1, name_2, name_3,"app/static/data/")
 
 
