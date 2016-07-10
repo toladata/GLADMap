@@ -103,9 +103,11 @@
                       <input type="radio" name="status" value="orange">  Mark Alert<br>
                       <input type="radio" name="status" value="red">  Mark Danger<br>
                       <br>
-
                    <button id="done"type="submit" data-dismiss="modal">Submit</button>
+                   <button id="saveGeoJSON"type="submit" data-dismiss="modal">Save GeoJSON</button>
+
                </div>
+
 
 
            </div>
@@ -115,7 +117,7 @@
     <div class="loader"></div>
     <div class="tooltip"></div>
 
-
+<a href="#" id="downloadAnchorElem"></a>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='js/bootstrap-select.js') }}"></script>

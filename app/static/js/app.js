@@ -11,26 +11,14 @@ $(function(){
      });
 
 
-   function getColorOnDensity(d) {
-       return d > 1000 ? '#800026' :
-              d > 500  ? '#BD0026' :
-              d > 200  ? '#E31A1C' :
-              d > 100  ? '#FC4E2A' :
-              d > 50   ? '#FD8D3C' :
-              d > 20   ? '#FEB24C' :
-              d > 10   ? '#FED976' :
-                         '#FFEDA0';
-   }
+
 
 
     function style(feature) {
         return {
-            fillColor: getColor(feature.properties.density),
-            weight: 2,
-            opacity: 1,
-            color: 'white',
-            dashArray: '3',
-            fillOpacity: 0.7
+            fillColor: feature.properties.color?feature.properties.color:'green',
+            weight: 1,
+            color:'green'
         };
     }
 
@@ -91,7 +79,7 @@ $("#countryList").on('change',function(){
 });
 
 $("#uploadedList").on('change',function(){
-      $("#getNearest").hide();
+      $(".nearest").hide();
 
       if(features){
        features.clearLayers();
@@ -101,7 +89,7 @@ $("#uploadedList").on('change',function(){
         	  featuresInformation = L.geoJson(data, {
         		    onEachFeature: eventFeature
         		});
-        		featuresInformation.setStyle({fillColor: 'pink'});
+        		featuresInformation.setStyle(style);
         		try{
         		    var markers = L.markerClusterGroup();
                       features=markers.addLayer(featuresInformation);
@@ -110,11 +98,11 @@ $("#uploadedList").on('change',function(){
         		catch(err){
         		    features = featuresInformation.addTo(map);
         		}
-        		features.setStyle({fillColor: 'green',weight:1,color:'green'});
+        		features.setStyle(style);
 
         		 $(".loader").hide();
 
-        		$("#getNearest").show();
+        		$(".nearest").show();
 
 
           });
@@ -143,24 +131,50 @@ $("#uploadedList").on('change',function(){
      })
 
 
+     $('#saveGeoJSON').on('click',function(){
+
+        $.ajax({
+               url: "/export-geojson/"+selectedPolygon.feature.properties.ISO+"/"+selectedPolygon.feature.properties.NAME_1+"/"+selectedPolygon.feature.properties.NAME_2+"/"+selectedPolygon.feature.properties.NAME_3,
+               type: "GET"
+             }).done(function( data ) {
+                var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+                var dlAnchorElem = document.getElementById('downloadAnchorElem');
+                dlAnchorElem.setAttribute("href",     dataStr     );
+                dlAnchorElem.setAttribute("download", "geojson.json");
+                dlAnchorElem.click();
+             });
+
+
+
+     })
+
+
     function labelFeature(feature, layer) {
     //bind click
     //layer.bindPopup(layer.feature.properties.NAME_1);
-    var tooltip=layer.feature.properties["NAME_"+parseInt((zoomLevel/6)+1)];
-    if(!tooltip)
-        tooltip=layer.feature.properties.NAME_1;
-    layer.bindPopup(tooltip);
+//    var tooltip=layer.feature.properties["NAME_"+parseInt((zoomLevel/6)+1)];
+//    if(!tooltip)
+//        tooltip=layer.feature.properties.NAME_1;
+//    layer.bindPopup(tooltip);
 
     console.log(layer.feature);
     layer.on('mouseover', function (e) {
+
+
         var tooltip=layer.feature.properties["NAME_"+parseInt((zoomLevel/6)+1)];
         if(!tooltip)
             tooltip=layer.feature.properties.NAME_1;
-        this._popup.setContent(tooltip);
-        this.openPopup();
+        d3.select(".tooltip")
+                	  .style("left",  e.originalEvent.clientX + "px")
+                	  .style("top", e.originalEvent.clientY + "px")
+                	  .html(tooltip)
+                	  .style('opacity',1);
+                	  setTimeout(function(){ d3.select(".tooltip") .style('opacity',0); }, 2000);
+//        this._popup.setContent(tooltip);
+//        this.openPopup();
     });
     layer.on('mouseout', function (e) {
-        this.closePopup();
+        d3.select(".tooltip").style('opacity',0);
     });
 
     layer.on({
@@ -227,7 +241,7 @@ $("#getNearest").on('click',function(){
 
          var nearest = leafletKnn(featuresInformation).nearest(L.latLng(lat, lon), 3);
          for (var i=0;i<nearest.length;i++){
-           var marker=L.marker([nearest[i].lat, nearest[i].lon]).bindPopup("Here");
+           var marker=L.marker([nearest[i].lat, nearest[i].lon]).bindPopup("Nearest Point"+(i+1));
             markers.addLayer(marker);
          }
          console.log(nearest)
@@ -235,6 +249,12 @@ $("#getNearest").on('click',function(){
 
          $(".loader").hide();
         })
+    })
+
+
+    $("#hideNearest").on('click',function(){
+        markers.clearLayers();
+
     })
 $("#saveState").on('click',function(){
     $(".save-utility-holder").show();
