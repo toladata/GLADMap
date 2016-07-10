@@ -277,7 +277,7 @@ $("#saveFile").on('click',function(){
            type: "POST",
            data: JSON.stringify(params),
            processData: false,  // tell jQuery not to process the data
-           contentType: false   // tell jQuery not to set contentType
+           contentType: 'application/json'   // tell jQuery not to set contentType
          }).done(function( data ) {
              $(".save-utility-holder").show();
          });
