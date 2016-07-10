@@ -12,8 +12,6 @@ cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 
 @mod_data.route("/")
 def visualize():
-    online_users = mongo.db.users.find({'online': True})
-    print online_users
     return render_template('leaftlet.html')
 
 
