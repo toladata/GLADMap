@@ -1,17 +1,4 @@
   var files,layer;
-  var geojsonFeature = {
-		    "type": "Feature",
-		    "properties": {
-		        "name": "Coors Field",
-		        "amenity": "Baseball Stadium",
-		        "popupContent": "This is where the Rockies play!"
-		    },
-		    "geometry": {
-		        "type": "Point",
-		        "coordinates": [-104.99404, 39.75621]
-		    }
-		};
-
 
   // initialize the map
   var map = L.map('mapid').setView([36.99404, 39.75621], 2);
@@ -26,26 +13,63 @@
     }).addTo(map);
  
   
-  
-  
   d3.json("/data/file_locations.json", function(error, data) {
 	 files=data.files;
 	 addRegionalDetails(2);
   });
   
+ 
+  
+  d3.json("/data/afghanistan-data/afghanistan-data.geojson", function(error, data) {
+//	  L.geoJson(data).addTo(map);
+	  var information = L.geoJson(data, {
+		    onEachFeature: onEachFeature
+		})
+	  
+	  
+	  var markers = L.markerClusterGroup();
+	  markers.addLayer(information);
+	  map.addLayer(markers);
+  });
+  
+  function whenClicked(e) {
+	  // e = event
+	  console.log(e);
+	  // You can make your ajax call declaration here
+	  //$.ajax(... 
+	}
+
+	function onEachFeature(feature, layer) {
+	    //bind click
+	    layer.on({
+	        click: whenClicked
+	    });
+	}
+  
+  
   function addRegionalDetails(zoomLevel){
 	  if(layer)
 		  layer.clearLayers();
 	  var fileNo=parseInt(zoomLevel/6)+1;
+	  if (fileNo>3)
+		  fileNo=3;
 	  for (var i=0;i<files.length;i++){
 		  d3.json(files[i]+"_"+fileNo+".json",function(error, data) {
-			  layer=L.geoJson(data).addTo(map);
-			  layer.setStyle({weight :2}) 
+			  layer = L.geoJson(data, {
+				    onEachFeature: onEachFeature
+				}).addTo(map);
+			  
+			  layer.setStyle({weight :2});
+			  
 			});
 		  
 	  }
   }
   
-  map.on("zoomend", function (e) {addRegionalDetails(e.target['_animateToZoom']) });
+  
+  
+  map.on("zoomend", function (e) {
+	  addRegionalDetails(e.target['_animateToZoom']) 
+	  });
  
 
