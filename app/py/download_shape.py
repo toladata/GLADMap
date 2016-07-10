@@ -24,12 +24,14 @@ def download_country(country):
 	try:
 		zip_ref.extract(country+"_adm3.shp",shp_file_dir)
 		zip_ref.extract(country+"_adm3.shx",shp_file_dir)
+		zip_ref.extract(country+"_adm3.dbf",shp_file_dir)
 		shape_file_path = shp_file_dir + country + "_adm3.shp"
 		print "Saved " + shape_file_path
 	except Exception, e:
 		try:
 			zip_ref.extract(country+"_adm2.shp",shp_file_dir)
 			zip_ref.extract(country+"_adm2.shx",shp_file_dir)
+			zip_ref.extract(country+"_adm2.dbf",shp_file_dir)
 			shape_file_path = shp_file_dir + country + "_adm2.shp"
 			print "Saved " + shape_file_path
 		except Exception, e:
