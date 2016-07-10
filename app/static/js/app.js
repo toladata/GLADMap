@@ -29,11 +29,12 @@ $(function(){
   var selectedPolygon;
 
   // initialize the map
-  var map = L.map('mapid').setView([36.99404, 39.75621], 2);
+  var map = L.map('mapid').setView([30.737, 0.923], 2);
   var markers = new L.FeatureGroup();
   // load a tile layer
-     L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-//    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+//     L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+   L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+// L.tileLayer('http://a.tiles.mapbox.com/v3/mapbox.mapbox-streets/{z}/{x}/{y}.png',
     {
       maxZoom: 18,
       minZoom: 1,
