@@ -15,6 +15,8 @@ The team members realized that some of their help actions were inefficient due t
 To seek the constant innovation Mercy Corps has proposed an open source collaborative mapping tool that allows users to share and update admin boundaries for each of the countries Mercy Corps works in. This tool is a central map service that contains a GEOJSON based data feed and transforms Shapefiles and KML and stores them in a central GIS database. It has a searchable map interface that allows users to coordinate with other organizations and donors where they are working and areas that are underserved.
 
 
+
+
 ### Using gdal/ogr to convert geodatabase to GeoJson
 On mac -  
 > brew install gdal    
