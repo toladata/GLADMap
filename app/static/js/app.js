@@ -236,9 +236,11 @@ $("#getNearest").on('click',function(){
          $(".loader").hide();
         })
     })
-
-
 $("#saveState").on('click',function(){
+    $(".save-utility-holder").show();
+});
+
+$("#saveFile").on('click',function(){
     var countries=$("#countryList").val()
     var uploaded=$('#uploadedList').val();
     var files=[]
@@ -248,12 +250,13 @@ $("#saveState").on('click',function(){
     for (var i=0;i<uploaded.length;i++){
            files.push('/static/upload/'+$('#uploadedList').val());
         }
-    var params={'files':files,'colorInfo':colorInfo}
+    var params={'files':files,'colorInfo':colorInfo,'fileName':$('.save-file-utility').val()}
     $.ajax({
            url: "/save-state",
+           type: "POST",
            data: params,
          }).done(function( data ) {
-             console.log("hi");
+             $(".save-utility-holder").show();
          });
 
 })
