@@ -6,27 +6,47 @@ import urllib
 import zipfile
 
 template_str = "http://biogeo.ucdavis.edu/data/gadm2.8/shp/{0}_adm_shp.zip"
-file_dir = "../tmp/"
+shp_file_dir = "../tmp/"
 
-list_country = ['AFG','CHN']
+list_country = ['NER','NGA','PAK','SOM','SSD','LKA','SDN','SYR','TJK','TLS','TUN','TUR','UGA','UKR','USA','XWB','XGZ','YEM','ZWE',
+'CAF', 'CHN', 'COL', 'COD', 'EGY', 'ETH', 'GEO', 'GTM', 'HTI', 'HND', 'IND', 'IDN', 'IRQ', 'JPN', 'JOR', 'KEN', 'XKX', 'KGZ', 'LBN', 'LBR', 'LBY', 'MLI', 'MNG', 'MAR', 'MMR', 'NPL']
 
-for country in list_country:
-	path = template_str.format(country)
-	print "Trying path - " + path
-	file_name = path.split("/")[-1]
-	file_path = file_dir + file_name
-	urllib.urlretrieve (path, file_path)
+def download_country(country):
+	shape_file_path = ""
+	download_url = template_str.format(country)
+	print "Trying path - " + download_url
+	file_name = download_url.split("/")[-1]
+	file_path = shp_file_dir + file_name
+	urllib.urlretrieve (download_url, file_path)
 	print "Saved in - " + file_path
 	zip_ref = zipfile.ZipFile(file_path, 'r')
+
 	try:
-		zip_ref.extract(country+"_adm3.shp",file_dir)
-		print "Saved " + country + "_adm3.shp"
+		zip_ref.extract(country+"_adm3.shp",shp_file_dir)
+		zip_ref.extract(country+"_adm3.shx",shp_file_dir)
+		shape_file_path = shp_file_dir + country + "_adm3.shp"
+		print "Saved " + shape_file_path
 	except Exception, e:
 		try:
-			zip_ref.extract(country+"_adm2.shp",file_dir)
-			print "Saved " + country + "_adm2.shp"
+			zip_ref.extract(country+"_adm2.shp",shp_file_dir)
+			zip_ref.extract(country+"_adm2.shx",shp_file_dir)
+			shape_file_path = shp_file_dir + country + "_adm2.shp"
+			print "Saved " + shape_file_path
 		except Exception, e:
 			print "Cant find shape file for " + file_name
 
-	
 	zip_ref.close()
+	return shape_file_path
+
+if __name__ == "__main__":
+	for country in list_country:
+		try:
+			download_country(country)
+		except Exception, e:
+			print e
+			print ":::::"
+			print "Can't process - " + country
+			print ":::::"
+
+		
+
