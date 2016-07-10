@@ -7,7 +7,22 @@
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='leaflet-cluster/MarkerCluster.Default.css') }}">
     <style>
 		#mapid { height: 600px; width:90% ;float:left;}
-		#optionsPanel{ width:10%;float:left}
+		select#countryList{ display:none;}
+		.margin-15{   margin: 15px;}
+		.file-upload-holder{display:none; float: right;}
+		#getNearest{display:none;}
+		.loader{
+		    position: fixed;
+            z-index: 10000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba( 255, 255, 255, .8 ) url('/static/js/images/loading.gif') 50% 50% no-repeat;
+            display:none;
+
+		}
+
 	</style>
 
 </head>
@@ -21,7 +36,28 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Main</a></li>
-                <li><a href="#">Upload Data</a></li>
+                <li class="margin-15">
+                    <select id="countryList" multiple="multiple">
+                    </select>
+                    </li>
+                <li class="margin-15">
+                    <div class="btn btn-default" id="showUploader">Upload Data</div>
+                    <div class="file-upload-holder">
+                        <form>
+                            <input type="file" accept="application/json" name="file" class="upload-file-utility">
+                            <input type="text" placeholder="Enter description" name="fileNames" class="upload-file-utility">
+                            <div id="uploadFile" class="btn btn-success">Done</div>
+                        </form>
+                    </div>
+                </li>
+
+                <li class="margin-15">
+                    <select id="uploadedList"><option>--select uploaded events--</option></select>
+                </li>
+
+                <li class="margin-15">
+                    <div id="getNearest" class="btn btn-default">Get nearest</div>
+                </li>
             </ul>
 
         </div><!-- /.navbar-collapse -->
@@ -29,11 +65,16 @@
 </nav>
 	
 	<div id="mapid"></div>
-    <div id="optionsPanel"><select id="countryList"></select></div>
+
+    <div class="loader"></div>
+
 
     <script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-select.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
     <script src="{{ url_for('static', filename='leaflet-cluster/leaflet.markercluster-src.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/leafletknn.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
