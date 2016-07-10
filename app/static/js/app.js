@@ -10,7 +10,33 @@ $(function(){
         }
      });
 
-  var files,layers=[],features,featuresInformation,zoomLevel;
+
+   function getColorOnDensity(d) {
+       return d > 1000 ? '#800026' :
+              d > 500  ? '#BD0026' :
+              d > 200  ? '#E31A1C' :
+              d > 100  ? '#FC4E2A' :
+              d > 50   ? '#FD8D3C' :
+              d > 20   ? '#FEB24C' :
+              d > 10   ? '#FED976' :
+                         '#FFEDA0';
+   }
+
+
+    function style(feature) {
+        return {
+            fillColor: getColor(feature.properties.density),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        };
+    }
+
+
+
+  var files,layers=[],features,featuresInformation,zoomLevel,colorInfo=[];
   var leaf_id =[];
   var selectedPolygon;
 
@@ -57,7 +83,7 @@ $("#countryList").on('change',function(){
                       onEachFeature: labelFeature
                   }).addTo(map));
 
-                layers[layers.length-1].setStyle({weight:2,opacity:(zoomLevel)/18});
+                layers[layers.length-1].setStyle({weight:1,opacity:(zoomLevel)/18});
 
               });
       }
@@ -75,6 +101,7 @@ $("#uploadedList").on('change',function(){
         	  featuresInformation = L.geoJson(data, {
         		    onEachFeature: eventFeature
         		});
+        		featuresInformation.setStyle({fillColor: 'pink'});
         		try{
         		    var markers = L.markerClusterGroup();
                       features=markers.addLayer(featuresInformation);
@@ -83,6 +110,7 @@ $("#uploadedList").on('change',function(){
         		catch(err){
         		    features = featuresInformation.addTo(map);
         		}
+        		features.setStyle({fillColor: 'green',weight:1,color:'green'});
 
         		 $(".loader").hide();
 
@@ -102,27 +130,37 @@ $("#uploadedList").on('change',function(){
 
 
     $("#done").on("click",function(){
-    status= $("input[type='radio']:checked").val();
+        status= $("input[type='radio']:checked").val();
    // console.log(status);
-    var i;
-     selectedPolygon.setStyle({
+        var i;
+        selectedPolygon.setStyle({
               weight: 2,
               color: '#000000',
               fillColor: status
           });
+        colorInfo.push({'color':selectedPolygon.options.fillColor,
+                        'properties': selectedPolygon.feature.properties});
      })
 
 
     function labelFeature(feature, layer) {
     //bind click
     //layer.bindPopup(layer.feature.properties.NAME_1);
-    layer.bindPopup(layer.feature.properties.NAME_1);
+    var tooltip=layer.feature.properties["NAME_"+parseInt((zoomLevel/6)+1)];
+    if(!tooltip)
+        tooltip=layer.feature.properties.NAME_1;
+    layer.bindPopup(tooltip);
+
     console.log(layer.feature);
     layer.on('mouseover', function (e) {
-        $(this).openPopup();
+        var tooltip=layer.feature.properties["NAME_"+parseInt((zoomLevel/6)+1)];
+        if(!tooltip)
+            tooltip=layer.feature.properties.NAME_1;
+        this._popup.setContent(tooltip);
+        this.openPopup();
     });
     layer.on('mouseout', function (e) {
-        $(this).closePopup();
+        this.closePopup();
     });
 
     layer.on({
@@ -153,7 +191,7 @@ $("#uploadedList").on('change',function(){
 
 
   map.on("zoomend", function (e) {
-	  var zoomLevel=e.target['_animateToZoom'];
+	  zoomLevel=e.target['_animateToZoom'];
 	  for (var i=0;i<layers.length;i++){
 		  layers[i].setStyle({opacity: (zoomLevel)/18});
 		  }
@@ -196,9 +234,29 @@ $("#getNearest").on('click',function(){
          map.addLayer(markers);
 
          $(".loader").hide();
-})
+        })
+    })
 
 
+$("#saveState").on('click',function(){
+    var countries=$("#countryList").val()
+    var uploaded=$('#uploadedList').val();
+    var files=[]
+    for (var i=0;i<countries.length;i++){
+       files.push('/static/data/'+$("#countryList").val());
+    }
+    for (var i=0;i<uploaded.length;i++){
+           files.push('/static/upload/'+$('#uploadedList').val());
+        }
+    var params={'files':files,'colorInfo':colorInfo}
+    $.ajax({
+           url: "/save-state",
+           data: params,
+         }).done(function( data ) {
+             console.log("hi");
+         });
+
 })
+
 
 });

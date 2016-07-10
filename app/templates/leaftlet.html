@@ -11,7 +11,7 @@
 			#mapid { height: 600px; width:90% ;float:left;}
 		select#countryList{ display:none;}
 		.margin-15{   margin: 15px;}
-		.file-upload-holder{display:none; float: right;}
+		.file-upload-holder,.save-utility-holder{display:none; float: right;}
 		.nav > li.nearest{display:none;}
 		.loader{
 		    position: fixed;
@@ -23,6 +23,16 @@
             background: rgba( 255, 255, 255, .8 ) url('/static/js/images/loading.gif') 50% 50% no-repeat;
             display:none;
 
+		}
+		.tooltip{
+		    position: absolute;
+            padding: 5px;
+            font: 12px sans-serif;
+            background: #B3B3B3;
+            border: 0;
+            border-radius: 8px;
+            pointer-events: none;
+            opacity:0
 		}
 	</style>
 
@@ -53,12 +63,22 @@
                 </li>
 
                 <li class="margin-15">
-                    <select id="uploadedList"><option>--select uploaded events--</option></select>
+                    <select id="uploadedList"><option value="">--select uploaded events--</option></select>
                 </li>
 
                 <li class="margin-15 nearest">
                     <div id="getNearest" class="btn btn-default">Get nearest</div>
                     <div id="hideNearest" class="btn btn-default btn-sm">X</div>
+                </li>
+                <li class="margin-15">
+                    <div id="saveState" class="btn btn-default">Save</div>
+                    <div class="save-utility-holder">
+                        <form>
+                            <input type="text" placeholder="Enter description" name="fileNames" class="upload-file-utility">
+                            <div id="saveFile" class="btn btn-success">Done</div>
+                        </form>
+                    </div>
+
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -79,7 +99,7 @@
                    <h4 class="modal-title ng-binding">Mark the selected region:</h4>
                </div>
                <div class="modal-body">
-                   <p ng-bind="notesHighlighted" class="ng-binding"></p>
+                   <p  class="ng-binding"></p>
                    <!-- ngIf: notesHighlighted -->
                       <br>
                       <input type="radio" name="status" value="green">  Mark Safe<br>
@@ -87,7 +107,7 @@
                       <input type="radio" name="status" value="red">  Mark Danger<br>
                       <br>
 
-                   <button id="done" ng-click="addNote()" type="submit" data-dismiss="modal">Submit</button>
+                   <button id="done"type="submit" data-dismiss="modal">Submit</button>
                </div>
 
 
@@ -96,6 +116,7 @@
        </div>
     </div>
     <div class="loader"></div>
+    <div class="tooltip"></div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
