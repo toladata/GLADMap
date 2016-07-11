@@ -89,7 +89,8 @@ python run.py<br/>
 
 
 The project is also hosted at 45.55.25.49:8000/globe(Web) or 45.55.25.49:8000(Mobile/Web) 
-
+Screenshot:
+![alt tag](https://github.com/toladata/GLADMap/blob/master/screen_shot_2016-07-10_at_2.18.21_pm.png)
 
 
 
