@@ -87,15 +87,15 @@ python run.py<br/>
 - Navigate to http://0.0.0.0:5000/globe to see the globe version 
 
 
+### Using REST service to export GeoJson
+/export-geojson/<iso_code>/<ADM_LEVEL_1>/<ADM_LEVEL_2>/<ADM_LEVEL_3>
+Example - 
 
-The project is also hosted at 45.55.25.49:8000/globe(Web) or 45.55.25.49:8000(Mobile/Web) 
+`http://localhost:5000/export-geojson/USA/California/`
+`http://localhost:5000/export-geojson/IND/Uttar%20Pradesh/Bijnor/Dhampur`
+
+
 Screenshot:
 ![alt tag](https://github.com/toladata/GLADMap/blob/master/screen_shot_2016-07-10_at_2.18.21_pm.png)
 
 
-
-
-
-- https://pypi.python.org/pypi/pyshp/1.1.7 (Shapefile to GEOJSON)
-
-- http://www.qgis.org/en/site/ (QGis Open Source desktop mapping tool)
