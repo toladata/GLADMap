@@ -88,11 +88,10 @@ python run.py<br/>
 
 
 ### Using REST service to export GeoJson
-/export-geojson/<iso_code>/<ADM_LEVEL_1>/<ADM_LEVEL_2>/<ADM_LEVEL_3>
-Example - 
-
-`http://localhost:5000/export-geojson/USA/California/`
-`http://localhost:5000/export-geojson/IND/Uttar%20Pradesh/Bijnor/Dhampur`
+` /export-geojson/<iso_code>/<ADM_LEVEL_1>/<ADM_LEVEL_2>/<ADM_LEVEL_3>`
+Example -    
+`http://localhost:5000/export-geojson/USA/California/`   
+`http://localhost:5000/export-geojson/IND/Uttar%20Pradesh/Bijnor/Dhampur`  
 
 
 Screenshot:
