@@ -4,15 +4,15 @@ Create country boundary and administrative district maps for sharing via GEOJSON
 
 
 # Inspiration
+Global Humanitarian agencies engaged in transitional environments that have experienced some sort of shock: natural disaster, economic collapse, or conflict.
 
-Mercy Corps is a global humanitarian aid agency engaged in transitional environments that have experienced some sort of shock: natural disaster, economic collapse, or conflict.
+One of the problems they are facing right now is the insufficient systems for managing mapping data. The incomplete or incorrect maps, and admin layer data can be costly, even dangerous. The lack of timely data and information impacts decision making and coordination with other organizations.
 
-One of the problems Mercy Corps is facing right now is the insufficient systems for managing mapping data. The incomplete or incorrect maps, and admin layer data can be costly, even dangerous. The lack of timely data and information impacts decision making and coordination with other organizations.
+As an example, in April 2015 when the intense earthquake hit Nepal emergency response teams moved to the affected regions of the country, where they were coordinating with multiple local and international Organizations, to serve communities and beneficiaries.
 
-As an example, in April 2015 when the intense earthquake hit Nepal the Mercy Corps emergency response team moved to the affected regions of the country, where they were coordinating with multiple local and international Organizations, to serve communities and beneficiaries.
 The team members realized that some of their help actions were inefficient due to errors and discrepancies they found in their maps. In consequence, they had to meet with developers and local communities to update the maps, so that they could reach the beneficiaries as it was planned from the beginning. The whole process took weeks.
 
-To seek the constant innovation Mercy Corps has proposed an open source collaborative mapping tool that allows users to share and update admin boundaries for each of the countries Mercy Corps works in. This tool is a central map service that contains a GEOJSON based data feed and transforms Shapefiles and KML and stores them in a central GIS database. It has a searchable map interface that allows users to coordinate with other organizations and donors where they are working and areas that are underserved.
+We proposed an open source collaborative mapping tool that allows users to share and update admin boundaries for each of the affected countries works. This tool is a central map service that contains a GEOJSON based data feed and transforms Shapefiles and KML and stores them in a central GIS database. It has a searchable map interface that allows users to coordinate with other organizations and donors where they are working and areas that are underserved.
 
 
 
